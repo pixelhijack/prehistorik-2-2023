@@ -3,28 +3,23 @@ import logoImg from './assets/logo.png';
 import pre2atlasImg from './assets/pre2atlas.png';
 import atlasJSON from './assets/pre2atlas.json';
 
-class GameScene extends Phaser.Scene
+class MyGame extends Phaser.Scene
 {
-    constructor (data)
+    constructor ()
     {
-        super('game-scene');
-        console.info('[PHASER][GameScene][ constructor ]', data);
-    }
-    
-    init (data)
-    {
-        console.info('[PHASER][GameScene][ init ]', data);
+        super();
+        console.info('[PHASER][MyGame][ constructor ]');
     }
 
     preload ()
     {
-        console.info('[PHASER][GameScene][ preload ]');
+        console.info('[PHASER][MyGame][ preload ]');
         this.load.atlas('man', pre2atlasImg, atlasJSON);
     }
       
-    create (data)
+    create ()
     {
-        console.info('[PHASER][GameScene][ create ]', data);
+        console.info('[PHASER][MyGame][ create ]');
         const animations = [
             { name: 'move', frames: [11,'03','05',14,20], fps: 10, loop: false }, 
             { name: 'hit', frames: [22,24,28,31,34,22,24,28,31,34], fps: 10, loop: true }, 
@@ -67,19 +62,18 @@ class GameScene extends Phaser.Scene
     }
 }
 
-const level = window.location.pathname.split('/level/')[1];
+const config = {
+    type: Phaser.AUTO,
+    parent: 'phaser-example',
+    width: 800,
+    height: 600,
+    scene: MyGame
+};
 
-fetch(`api/levels/${level}.json`, { method: 'get' })
+fetch("api/levels/1.json")
     .then(res => res.json())
     .then(data => {
-        const game = new Phaser.Game({
-            type: Phaser.AUTO,
-            parent: 'phaser-example',
-            width: 800,
-            height: 600,
-            scene: [GameScene]
-        });
-        game.scene.start('game-scene', {level: data});
-    })
-    .catch(err => console.error(err));
+        return data;
+    });
 
+const game = new Phaser.Game(config);
