@@ -25,6 +25,9 @@ module.exports = {
       }
     ]
   },
+  devServer: {
+    historyApiFallback: true
+  },
   plugins: [
     new CleanWebpackPlugin({
       root: path.resolve(__dirname, "../")
