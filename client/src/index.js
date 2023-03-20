@@ -69,9 +69,12 @@ class GameScene extends Phaser.Scene
 
 const level = window.location.pathname.split('/level/')[1];
 
-fetch(`api/levels/${level}.json`, { method: 'get' })
+fetch(`api/levels/${level}`, { method: 'get' })
     .then(res => res.json())
-    .then(data => {
+    .then(({
+        level, 
+        levelconfig
+      }) => {
         const game = new Phaser.Game({
             type: Phaser.AUTO,
             parent: 'phaser-example',
@@ -79,7 +82,7 @@ fetch(`api/levels/${level}.json`, { method: 'get' })
             height: 600,
             scene: [GameScene]
         });
-        game.scene.start('game-scene', {level: data});
+        game.scene.start('game-scene', { level, levelconfig });
     })
     .catch(err => console.error(err));
 

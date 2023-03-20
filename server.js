@@ -11,7 +11,13 @@ app.use(express.static(path.resolve(__dirname, 'server\/assets')));
 
 app.get('/api/levels/:id', function (req, res) {
   console.info('[/level/:id]', req.params);
-  res.sendFile(path.normalize(__dirname + '/server/levels/' + req.params.id));
+  const level = JSON.parse(fs.readFileSync(path.normalize(__dirname + '/server/levels/level-' + req.params.id + '.json', 'utf8')));
+  const levelconfig = JSON.parse(fs.readFileSync(path.normalize(__dirname + '/server/levelconfigs/levelconfig-' + req.params.id + '.json', 'utf8')));
+  //res.sendFile(path.normalize(__dirname + '/server/levels/level-' + req.params.id + '.json'));
+  res.send({
+    level, 
+    levelconfig
+  });
 });
 
 app.get('/', function (req, res) {
